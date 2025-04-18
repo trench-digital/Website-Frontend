@@ -109,6 +109,20 @@ type Token = {
   migrationSpeed?: number;
   migrationTimeFormatted?: string;
   migratedOn?: string;
+  keywords?: string[];
+  creation?: {
+    mint?: string;
+    keywords?: string[];
+    metadata?: {
+      name?: string;
+      symbol?: string;
+      description?: string;
+      image?: string;
+      twitter?: string;
+      website?: string;
+      telegram?: string;
+    };
+  };
 };
 
 // Define pagination info type
@@ -263,6 +277,14 @@ export default function Tokens() {
     };
   }, []);
 
+  // Function to safely handle keywords
+  const getSafeKeywords = (creation: any): string[] => {
+    if (!creation) return [];
+    if (!creation.keywords) return [];
+    if (Array.isArray(creation.keywords)) return creation.keywords;
+    return [];
+  };
+
   // Process API data into component state
   const processApiData = useCallback(
     (
@@ -364,7 +386,9 @@ export default function Tokens() {
               migrationSpeed: migrationSpeed,
               migrationTimeFormatted: migrationTimeFormatted,
               migratedOn: migratedOn,
-            };
+              keywords: getSafeKeywords(creation),
+              creation: creation,
+            } as Token;
           } else {
             // CreationWithCallsResponse type
             const response = creationResponse as CreationWithCallsResponse;
@@ -396,7 +420,9 @@ export default function Tokens() {
               migrationSpeed: undefined,
               migrationTimeFormatted: undefined,
               migratedOn: undefined,
-            };
+              keywords: getSafeKeywords(creation),
+              creation: creation,
+            } as Token;
           }
         }
       );
@@ -405,7 +431,7 @@ export default function Tokens() {
         "Data processing complete, setting tokens:",
         formattedTokens.length
       );
-      setTokens(formattedTokens);
+      setTokens(formattedTokens as Token[]);
 
       // Update pagination info based on results
       // If the API returns an empty array, that means we've reached the last page + 1
@@ -1276,24 +1302,23 @@ export default function Tokens() {
                               </p>
                             )}
                             <div className="flex gap-2 flex-wrap mt-1">
-                              {/* Removed keyword rendering logic */}
-                              {/* {token.keywords &&
+                              {token.keywords &&
                               Array.isArray(token.keywords) &&
                               token.keywords.length > 0
                                 ? token.keywords.map((keyword, idx) => (
                                     <span
                                       key={idx}
-                                      className="text-xs bg-[rgba(0,255,0,0.1)] px-2 py-0.5 rounded-full cursor-pointer"
+                                      className="text-xs bg-[rgba(0,255,0,0.1)] border border-[var(--pip-glow-green)] px-2 py-0.5 rounded-full cursor-pointer hover:bg-[rgba(0,255,0,0.2)]"
                                       onClick={(e) => {
                                         e.stopPropagation(); // Prevent card click
                                         e.preventDefault(); // Prevent link navigation
-                                        handleKeywordClick(keyword);
+                                        router.push(`/keyword/${encodeURIComponent(keyword)}`);
                                       }}
                                     >
-                                      {keyword}
+                                      #{keyword}
                                     </span>
                                   ))
-                                : null} */}
+                                : null}
                             </div>
                           </div>
                         </div>
