@@ -1347,8 +1347,8 @@ export default function Keywords() {
                     <div className="flex justify-between items-center">
                       <div className="flex items-center gap-3">
                         <div className="w-8 h-8 flex items-center justify-center bg-[rgba(0,255,0,0.1)] rounded-full">
-                          <span className="text-[var(--pip-glow-green)] font-bold">
-                            #
+                          <span className="text-[var(--pip-glow-green)] font-bold text-base drop-shadow-[0_0_3px_var(--pip-glow-green)]">
+                            #{index + 1}
                           </span>
                         </div>
                         <div>
