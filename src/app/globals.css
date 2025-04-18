@@ -1,0 +1,283 @@
+@import "tailwindcss";
+
+@font-face {
+  font-family: "Monofont";
+  src: url("/fonts/monofont.ttf") format("truetype");
+  font-weight: normal;
+  font-style: normal;
+}
+
+:root {
+  --pip-black: #000000;
+  --pip-glow-green: #19ff81;
+  --pip-dark-gradient-green: #041607;
+  --pip-light-gradient-green: #11581e;
+  --pip-transparent: rgba(0, 0, 0, 0);
+
+  --background: var(--pip-black);
+  --foreground: var(--pip-glow-green);
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-geist-sans);
+  --font-mono: var(--font-geist-mono);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --background: var(--pip-black);
+    --foreground: var(--pip-glow-green);
+  }
+}
+
+body {
+  background-color: var(--pip-black);
+  background-image: radial-gradient(
+    var(--pip-light-gradient-green),
+    var(--pip-dark-gradient-green)
+  );
+  color: var(--pip-glow-green);
+  font-family: "Monofont", var(--font-geist-mono), monospace;
+  min-height: 100vh;
+  position: relative;
+}
+
+.pip-border {
+  position: relative;
+  border: 2px solid var(--pip-glow-green);
+  border-radius: 4px;
+  padding: 1rem;
+  background-color: rgba(0, 0, 0, 0.7);
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.pip-border::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-image: linear-gradient(
+    to right,
+    var(--pip-glow-green),
+    var(--pip-transparent)
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 2px;
+}
+
+.pip-border::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 2px;
+  height: 100%;
+  background-image: linear-gradient(
+    to bottom,
+    var(--pip-glow-green),
+    var(--pip-transparent)
+  );
+  background-repeat: no-repeat;
+  background-size: 2px 100%;
+}
+
+.pip-border-bottom {
+  position: relative;
+}
+
+.pip-border-bottom::after {
+  content: "";
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-image: linear-gradient(
+    to right,
+    var(--pip-glow-green),
+    var(--pip-transparent)
+  );
+  background-repeat: no-repeat;
+  background-size: 100% 2px;
+}
+
+.pip-button {
+  padding: 0.5rem 1rem;
+  transition: all 0.2s ease;
+}
+
+.pip-button:hover,
+.pip-button:focus {
+  outline: 2px solid var(--pip-glow-green);
+  background: rgba(25, 255, 129, 0.2);
+  cursor: pointer;
+}
+
+.pip-button-active {
+  outline: 2px solid var(--pip-glow-green);
+  background: rgba(25, 255, 129, 0.3);
+}
+
+/* Hologram efekti için ek stiller */
+@keyframes flicker {
+  0% {
+    opacity: 0.95;
+    filter: brightness(1) contrast(1);
+  }
+  5% {
+    opacity: 0.8;
+    filter: brightness(1.1) contrast(1.2);
+  }
+  10% {
+    opacity: 0.9;
+    filter: brightness(0.9) contrast(1);
+  }
+  15% {
+    opacity: 1;
+    filter: brightness(1.1) contrast(0.9);
+  }
+  20% {
+    opacity: 0.85;
+    filter: brightness(1) contrast(1);
+  }
+  25% {
+    opacity: 0.95;
+    filter: brightness(1.2) contrast(1.1);
+  }
+  30% {
+    opacity: 1;
+    filter: brightness(1) contrast(1);
+  }
+  100% {
+    opacity: 1;
+    filter: brightness(1) contrast(1);
+  }
+}
+
+.hologram-glow {
+  filter: drop-shadow(0 0 5px var(--pip-glow-green))
+    drop-shadow(0 0 10px var(--pip-glow-green));
+}
+
+.hologram-flicker {
+  animation: flicker 2s infinite;
+  animation-timing-function: steps(1, end);
+}
+
+/* Terminal animasyonu için stiller */
+@keyframes typing {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.terminal-line {
+  overflow: hidden;
+  border-right: 0.15em solid transparent;
+  white-space: normal;
+  margin: 0;
+  letter-spacing: 0.1em;
+  word-wrap: break-word;
+  overflow-wrap: break-word;
+  max-width: 100%;
+  display: block;
+}
+
+/* Responsiveness için ekstra stiller */
+@media (max-width: 768px) {
+  .grid-cols-4 {
+    grid-template-columns: 1fr 1fr;
+  }
+}
+
+@media (max-width: 640px) {
+  .grid-cols-4,
+  .grid-cols-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Global scrollbar styling */
+* {
+  scrollbar-width: thin;
+  scrollbar-color: var(--pip-glow-green) rgba(0, 0, 0, 0.3);
+}
+
+/* Chrome, Edge, and Safari */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+  margin: 4px 0;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--pip-glow-green);
+  border-radius: 4px;
+  border: 1px solid rgba(25, 255, 129, 0.3);
+  box-shadow: 0 0 5px var(--pip-glow-green);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: rgba(25, 255, 129, 0.8);
+  box-shadow: 0 0 8px var(--pip-glow-green);
+}
+
+::-webkit-scrollbar-corner {
+  background: rgba(0, 0, 0, 0.3);
+}
+
+/* Fix for Chrome scrollbar alignment issues */
+html, body {
+  overflow-x: hidden;
+  overflow-y: auto;
+  width: 100%;
+  height: 100%;
+}
+
+.overflow-auto, .overflow-y-auto, .overflow-x-auto {
+  -webkit-overflow-scrolling: touch;
+  max-height: 100%;
+  max-width: 100%;
+}
+
+/* Ensure containers take full height and width */
+.h-full {
+  height: 100% !important;
+}
+
+.w-full {
+  width: 100% !important;
+}
+
+/* Ensure proper sizing for all elements */
+* {
+  box-sizing: border-box;
+}
+
+/* Fix for mobile view */
+@media (max-width: 1023px) {
+  .pip-border {
+    padding: 0.75rem;
+  }
+  
+  .terminal-scroll {
+    padding-right: 2px;
+  }
+}
